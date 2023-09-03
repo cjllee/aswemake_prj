@@ -7,6 +7,8 @@ import member.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -24,6 +26,7 @@ public class ItemService {
         itemRepository.save(item);
     }
 
+
     @Transactional
     public void deleteItem(Long itemId, Long memberId) {
         Member member = memberRepository.findOne(memberId);
@@ -35,14 +38,19 @@ public class ItemService {
         itemRepository.delete(item);
     }
 
-
-
-
-
     public List<Item> findItems() {
         return itemRepository.findAll();
     }
     public Item findOne(Long itemId) {
         return itemRepository.findOne(itemId);
     }
+
+    public String findPriceAtTimeFormatted(Long itemId, LocalDateTime dateTime) {
+        Item item = findOne(itemId);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        return String.format("%s 시점의 %s 상품 가격 = %d원",
+                dateTime.format(formatter), item.getName(), item.getPrice());
+    }
+
 }
