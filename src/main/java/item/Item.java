@@ -27,6 +27,8 @@ public class Item {
     @OneToOne(mappedBy = "item", cascade = CascadeType.ALL)
     private Coupon coupon;
 
+
+
     public void addStock(int quantity) {
         this.stockQuantity += quantity;
     }

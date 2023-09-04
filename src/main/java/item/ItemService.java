@@ -26,6 +26,11 @@ public class ItemService {
         itemRepository.save(item);
     }
 
+    @Transactional
+    public void updatePrice(Long itemId, int price) {
+        Item item = findOne(itemId);
+        item.setPrice(price);
+    }
 
     @Transactional
     public void deleteItem(Long itemId, Long memberId) {
