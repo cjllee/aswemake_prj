@@ -1,4 +1,4 @@
-package exception;
+package market.shop.exception;
 
 public class NotEnoughStockException extends RuntimeException {
     public NotEnoughStockException() {

@@ -1,13 +1,12 @@
-package order;
+package market.shop.order;
 
-import delivery.Delivery;
-import delivery.DeliveryStatus;
-import item.Item;
-import item.ItemRepository;
+import market.shop.delivery.Delivery;
+import market.shop.item.Item;
+import market.shop.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
-import member.Member;
-import member.MemberRepository;
-import orderitem.OrderItem;
+import market.shop.member.Member;
+import market.shop.member.MemberRepository;
+import market.shop.orderitem.OrderItem;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,10 +27,6 @@ public class OrderService {
         Member member = memberRepository.findOne(memberId);
         Item item = itemRepository.findOne(itemId);
 
-        // 배송 정보 생성
-        Delivery delivery = new Delivery();
-        delivery.setAddress(member.getAddress());
-        delivery.setStatus(DeliveryStatus.READY);
 
         //상품 원래 가격
         int originalPrice=item.getPrice()*count;
@@ -55,7 +50,7 @@ public class OrderService {
         OrderItem orderItem = OrderItem.createOrderItem(item, orderPrice, count);
 
         // 주문 생성
-        Order order = Order.createOrder(member, delivery, orderItem);
+        Order order = Order.createOrder(member, orderItem);
 
         // 주문 저장
         orderRepository.save(order);

@@ -1,4 +1,4 @@
-package item;
+package market.shop.item;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;

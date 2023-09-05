@@ -1,6 +1,6 @@
-package coupon;
+package market.shop.coupon;
 
-import item.Item;
+import market.shop.item.Item;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +12,7 @@ public class Coupon {
     @Id @GeneratedValue
     @Column(name = "coupon_id")
     private Long id;
+
 
     private int discountAmount;
 

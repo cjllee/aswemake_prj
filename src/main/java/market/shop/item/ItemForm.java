@@ -1,4 +1,4 @@
-package item;
+package market.shop.item;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,8 +10,5 @@ public class ItemForm {
 
     private String name;
     private int price;
-    private int stockQuantity;
 
-    private String author;
-    private String isbn;
 }

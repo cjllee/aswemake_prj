@@ -1,13 +1,12 @@
 package market.shop;
 
 
-import item.Item;
-import item.ItemService;
-import member.Address;
-import member.Member;
-import member.MemberForm;
-import member.MemberService;
-import order.OrderService;
+import market.shop.item.Item;
+import market.shop.item.ItemService;
+import market.shop.member.Member;
+import market.shop.member.MemberForm;
+import market.shop.member.MemberService;
+import market.shop.order.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,8 +39,6 @@ public class AppController {
     public void createMember(@RequestBody MemberForm form) {
         Member member = new Member();
         member.setName(form.getName());
-        Address address = new Address(form.getCity(), form.getStreet(), form.getZipcode());
-        member.setAddress(address);
 
         memberService.join(member);
     }

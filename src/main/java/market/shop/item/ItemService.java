@@ -1,9 +1,9 @@
-package item;
+package market.shop.item;
 
 import lombok.RequiredArgsConstructor;
-import member.Grade;
-import member.Member;
-import member.MemberRepository;
+import market.shop.member.Role;
+import market.shop.member.Member;
+import market.shop.member.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +20,7 @@ public class ItemService {
     @Transactional
     public void saveItem(Item item, Long memberId) {
         Member member = memberRepository.findOne(memberId);
-        if (member.getGrade() != Grade.MAN) {
+        if (member.getGrade() != Role.Mart) {
             throw new IllegalStateException("매니저만 생성및 업데이트가 가능합니다.");
         }
         itemRepository.save(item);
@@ -35,7 +35,7 @@ public class ItemService {
     @Transactional
     public void deleteItem(Long itemId, Long memberId) {
         Member member = memberRepository.findOne(memberId);
-        if (member.getGrade() != Grade.MAN) {
+        if (member.getGrade() != Role.Mart) {
             throw new IllegalStateException("매니저만이 삭제가 가능합니다.");
         }
 

@@ -1,9 +1,9 @@
-package member;
+package market.shop.member;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import order.Order;
+import market.shop.order.Order;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +17,10 @@ public class Member {
 
     private String name;
 
-    @Embedded
-    private Address address;
-
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
-    private Grade grade;
+    private Role grade;
 
 }

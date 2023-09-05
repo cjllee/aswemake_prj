@@ -1,5 +1,8 @@
 package member;
 
+import market.shop.member.Member;
+import market.shop.member.MemberRepository;
+import market.shop.member.MemberService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
