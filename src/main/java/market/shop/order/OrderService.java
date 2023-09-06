@@ -20,13 +20,13 @@ public class OrderService {
     private final MemberRepository memberRepository;
     private final OrderRepository orderRepository;
     private final ItemRepository itemRepository;
+
     /** 주문 */
     @Transactional
     public Long order(Long memberId, Long itemId, int count) {
         // 엔티티 조회
         Member member = memberRepository.findOne(memberId);
         Item item = itemRepository.findOne(itemId);
-
 
         //상품 원래 가격
         int originalPrice=item.getPrice()*count;
@@ -46,10 +46,10 @@ public class OrderService {
             }
         }
 
-        // 주문 상품 생성
+        // 주문 상품 생성 (여기서는 createOrderItem이라는 정적 팩토리 메서드가 있다고 가정합니다.)
         OrderItem orderItem = OrderItem.createOrderItem(item, orderPrice, count);
 
-        // 주문 생성
+        // 주문 생성 (여기서는 createOrder이라는 정적 팩토리 메서드가 있다고 가정합니다.)
         Order order = Order.createOrder(member,orderItem);
 
         // 주문 저장
@@ -59,10 +59,10 @@ public class OrderService {
     }
 
     /** 주문 취소 */
-
-    //public List<Order> findOrders(OrderSearch orderSearch) {
-     //   return orderRepository.findAllByString(orderSearch);
-  //  }
-
+    @Transactional
+    public void cancelOrder(Long orderId) {
+        Order findOrder = this.order.findById(orderId).orElseThrow(() -> new IllegalArgumentException("No such orders."));
+        findOrder.cancel();
+    }
 
 }

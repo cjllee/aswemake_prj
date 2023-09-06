@@ -36,7 +36,6 @@ public class Order {
     List<Coupon> coupons = new ArrayList<>();
 
 
-
     public void setMember(Member member) {
         this.member = member;
         member.getOrders().add(this);
@@ -50,12 +49,17 @@ public class Order {
         delivery.setOrder(this);
     }
     //==생성 메서드==//
-    public static Order createOrder(Member member, OrderItem orderItem) {
+    public static Order createOrder(Member member, List<OrderItem> orderItems) {
         Order order = new Order();
         order.setMember(member);
-        order.getOrderItems().add(orderItem);
+
+        for (OrderItem orderItem : orderItems) {
+            order.addOrderItem(orderItem);
+        }
         return order;
     }
+
+
 
     //==조회 로직==//
     /** 전체 주문 가격 조회 */

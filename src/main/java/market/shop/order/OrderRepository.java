@@ -21,7 +21,7 @@ public class OrderRepository {
         this.em = em;
     }
 
-    public void save(market.shop.order.Order order) {
+    public void save(Order order) {
         em.persist(order);
     }
 
