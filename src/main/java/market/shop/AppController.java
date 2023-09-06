@@ -9,7 +9,6 @@ import market.shop.member.MemberForm;
 import market.shop.member.MemberService;
 import market.shop.order.Order;
 import market.shop.order.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,9 +26,9 @@ public class AppController {
     public void createMember(@RequestBody MemberForm form) {
         Member member = new Member();
         member.setName(form.getName());
-        member.setRole(form.getRole()); // role setting
+        member.setRole(form.getRole());
         memberService.join(member);
-    }
+    } // 완료
 
     //상품 등록
     @PostMapping("/items")
@@ -38,7 +37,7 @@ public class AppController {
         item.setName(form.getName());
         item.setPrice(form.getPrice());
         itemService.saveItem(item , memberId);
-    }
+    } //완료
 
     // 상품 조회 API
     @GetMapping("/items/{itemId}")
