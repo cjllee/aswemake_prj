@@ -16,11 +16,13 @@ public class PriceHistory {
     @GeneratedValue
     private Long id;
 
-    private LocalDateTime changeDate; // 가격 변경 시간
+    private LocalDateTime changeTime; // 가격 변경 시간
 
     private int price; // 변경된 가격
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
+
+
 }

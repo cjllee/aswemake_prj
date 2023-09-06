@@ -9,8 +9,11 @@ import market.shop.member.Member;
 import market.shop.member.MemberForm;
 import market.shop.member.MemberService;
 import market.shop.order.Order;
+import market.shop.order.OrderRequest;
 import market.shop.order.OrderService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
@@ -58,15 +61,21 @@ public class AppController {
         }
         itemService.updatePrice(request.getMemberId(), item.getId(), request.getPrice());
     }
-//  성공
+    //완료
+
+    //상품 가격 조회
+    @GetMapping("/items/{itemId}/price")
+    public String getItemPriceAt(@PathVariable Long itemId,
+                                 @RequestParam("dateTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime) {
+        return itemService.findPriceAtTimeFormatted(itemId, dateTime);
+    }
+// 여기부터 하기
 
 
     // 주문 생성 API
     @PostMapping("/orders")
-    public Long createOrder(@RequestParam Long memberId,
-                            @RequestParam Long itemId,
-                            @RequestParam int count) {
-        return orderService.order(memberId, itemId, count);
+    public Long createOrder(@RequestBody OrderRequest request) {
+        return orderService.order(request.getMemberId(), request.getItemId(), request.getCount());
     }
 
     //주문 조회
@@ -74,10 +83,7 @@ public class AppController {
     public Order getOrder(@PathVariable("id") Long orderId) {
         return orderService.findOrder(orderId);
     }
-
-
-
-
+// 쿠폰 적용되는지 확인 하기
 }
 
 
