@@ -44,6 +44,11 @@ public class AppController {
     public Item getItem(@PathVariable Long itemId) {
         return itemService.findOne(itemId);
     }
+    //완료
+
+
+
+
 
     // 상품 가격 수정 API
     @PutMapping("/items/{itemId}/price")
