@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import market.shop.item.Item;
 import market.shop.item.ItemForm;
 import market.shop.item.ItemService;
+import market.shop.item.UpdatePriceRequest;
 import market.shop.member.Member;
 import market.shop.member.MemberForm;
 import market.shop.member.MemberService;
@@ -47,14 +48,18 @@ public class AppController {
     //완료
 
 
-
-
-
     // 상품 가격 수정 API
-    @PutMapping("/items/{itemId}/price")
-    public void updateItemPrice(@PathVariable Long itemId, @RequestParam int price, @RequestParam Long memberId) {
-        itemService.updatePrice(memberId , itemId, price);
+    @PutMapping("/items/price")
+    public void updateItemPrice(@RequestBody UpdatePriceRequest request) {
+        Item item = itemService.findByName(request.getItemName());
+
+        if (item == null) {
+            throw new IllegalArgumentException("해당 이름의 상품이 없습니다.");
+        }
+        itemService.updatePrice(request.getMemberId(), item.getId(), request.getPrice());
     }
+//  성공
+
 
     // 주문 생성 API
     @PostMapping("/orders")

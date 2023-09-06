@@ -30,4 +30,10 @@ public class ItemRepository {
     public List<Item> findAll() {
         return em.createQuery("select i from Item i",Item.class).getResultList();
     }
+
+    public Item findByName(String name) {
+        return em.createQuery("select i from Item i where i.name = :name", Item.class)
+                .setParameter("name", name)
+                .getSingleResult();
+    }
 }

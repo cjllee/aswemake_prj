@@ -20,6 +20,9 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final MemberRepository memberRepository;
 
+    public Item findByName(String name) {
+        return itemRepository.findByName(name);
+    }
 
     @Transactional
     public void saveItem(Item item, Long memberId) {
