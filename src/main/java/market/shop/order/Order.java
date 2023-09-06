@@ -1,5 +1,6 @@
 package market.shop.order;
 
+import market.shop.coupon.Coupon;
 import market.shop.delivery.Delivery;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -31,6 +32,9 @@ public class Order {
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    List<Coupon> coupons = new ArrayList<>();
+
 
 
     public void setMember(Member member) {
@@ -46,25 +50,21 @@ public class Order {
         delivery.setOrder(this);
     }
     //==생성 메서드==//
-    public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
+    public static Order createOrder(Member member, OrderItem orderItem) {
         Order order = new Order();
         order.setMember(member);
-        order.setDelivery(delivery);
-        for (OrderItem orderItem : orderItems) {
-            order.addOrderItem(orderItem);
-        }
+        order.getOrderItems().add(orderItem);
         return order;
     }
 
     //==조회 로직==//
     /** 전체 주문 가격 조회 */
-    public int getTotalPrice() {
-        int totalPrice = 0;
+    public double getTotalPrice() {
+        double totalPrice = 0;
         for (OrderItem orderItem : orderItems) {
             totalPrice += orderItem.getTotalPrice();
         }
         return totalPrice + delivery.getPrice();
     }
-
 
 }

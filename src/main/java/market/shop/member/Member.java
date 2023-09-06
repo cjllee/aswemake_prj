@@ -21,6 +21,6 @@ public class Member {
     private List<Order> orders = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
-    private Role grade;
+    private Role role;
 
 }

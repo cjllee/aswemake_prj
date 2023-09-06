@@ -1,5 +1,6 @@
 package market.shop.coupon;
 
+import jakarta.persistence.criteria.Order;
 import market.shop.item.Item;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -16,8 +17,16 @@ public class Coupon {
 
     private int discountAmount;
 
+    @Enumerated(EnumType.STRING)
+    private DiscountType discountType;
+
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private Order order;
+
 }

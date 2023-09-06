@@ -50,7 +50,7 @@ public class OrderService {
         OrderItem orderItem = OrderItem.createOrderItem(item, orderPrice, count);
 
         // 주문 생성
-        Order order = Order.createOrder(member, orderItem);
+        Order order = Order.createOrder(member,orderItem);
 
         // 주문 저장
         orderRepository.save(order);
@@ -59,17 +59,10 @@ public class OrderService {
     }
 
     /** 주문 취소 */
-    @Transactional
-    public void cancelOrder(Long orderId) {
-        //주문 엔티티 조회
-        Order order = orderRepository.findOne(orderId);
-        //주문 취소
-        order.cancel();
-    }
 
-    public List<Order> findOrders(OrderSearch orderSearch) {
-        return orderRepository.findAllByString(orderSearch);
-    }
+    //public List<Order> findOrders(OrderSearch orderSearch) {
+     //   return orderRepository.findAllByString(orderSearch);
+  //  }
 
 
 }
