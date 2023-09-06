@@ -21,10 +21,15 @@ public class OrderService {
     private final ItemRepository itemRepository;
 
     /** 주문 */
+    @Transactional
     public Long order(Long memberId, Long itemId, int count) {
         // 엔티티 조회
         Member member = memberRepository.findOne(memberId);
         Item item = itemRepository.findOne(itemId);
+
+        if (item == null) {
+            throw new IllegalArgumentException("No such item: " + itemId);
+        }
 
         //상품 원래 가격
         int originalPrice=item.getPrice()*count;
@@ -44,8 +49,13 @@ public class OrderService {
             }
         }
 
+        int deliveryFee = 3000;  // 배달비 계산
+
         // 주문 상품 생성
-        OrderItem orderItem = OrderItem.createOrderItem(item, orderPrice, count);
+        OrderItem orderItem = new OrderItem();
+        orderItem.setItem(item);
+        orderItem.setOrderPrice(orderPrice + deliveryFee);
+        orderItem.setCount(count);
 
         // 주문 생성
         List<OrderItem> orderItems = new ArrayList<>();
@@ -54,22 +64,12 @@ public class OrderService {
         Order order = Order.createOrder(member,orderItems);
 
         // 주문 저장
-        orderRepository.save(order);
+        this.orderRepository.save(order);
 
-        return order.getId();
+        return this.orderRepository.save(order);
     }
-
-    
-
-
-
-
-
 
     public Order findOrder(Long id) {
-        return orderRepository.findOne(id);
+        return this.orderRepository.findOne(id);
     }
-
-
-
 }

@@ -7,6 +7,7 @@ import market.shop.member.Role;
 import market.shop.member.Member;
 import market.shop.member.MemberRepository;
 import market.shop.pricehistory.PriceHistory;
+import market.shop.pricehistory.PriceHistoryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,19 +24,31 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
     private final MemberRepository memberRepository;
+    private final PriceHistoryRepository priceHistoryRepository;
+
 
     public Item findByName(String name) {
         return itemRepository.findByName(name);
     }
 
     @Transactional
-    public void saveItem(Item item, Long memberId) {
+    public void saveItem(Item item, Long memberId, PriceHistory priceHistory) {
         Member member = memberRepository.findOne(memberId);
         if (member.getRole() != Role.Mart) {
             throw new IllegalStateException("권한이 없습니다.");
         }
         itemRepository.save(item);
-    }// 저장
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        // Format current time to 'yyyy-MM-dd HH:mm:ss'
+        String formatDateTime = LocalDateTime.now().format(formatter);
+
+        // Parse formatted string back to LocalDateTime
+        priceHistory.setChangedAt(LocalDateTime.parse(formatDateTime, formatter));
+
+        priceHistoryRepository.save(priceHistory);
+    }
 
 
     @Transactional
@@ -89,13 +102,20 @@ public class ItemService {
         history.setItem(item);
         history.setPrice(price);
 
-        // Set the change time to the current time.
-        history.setChangeTime(LocalDateTime.now());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        // Format current time to 'yyyy-MM-dd HH:mm:ss'
+        String formatDateTime = LocalDateTime.now().format(formatter);
+
+        // Parse formatted string back to LocalDateTime
+        history.setChangedAt(LocalDateTime.parse(formatDateTime, formatter));
 
         em.persist(history);
 
         item.setPrice(price);
     }
+
+
 
 
 }
