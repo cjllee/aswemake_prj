@@ -1,5 +1,6 @@
 package market.shop.order;
 
+import jakarta.validation.constraints.NotNull;
 import market.shop.coupon.Coupon;
 import market.shop.delivery.Delivery;
 import jakarta.persistence.*;
@@ -21,8 +22,6 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
-    private int totalPrice;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -36,6 +35,13 @@ public class Order {
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<Coupon> coupons = new ArrayList<>();
+
+
+
+    private Long itemId;
+
+    private int totalPrice;
+
 
 
     public void setMember(Member member) {

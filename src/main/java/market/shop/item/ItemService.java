@@ -89,6 +89,7 @@ public class ItemService {
                 dateTime.format(formatter), item.getName(), item.getPrice());
     }
 
+    @Transactional
     public void updatePrice(Long memberId, Long itemId, int price) {
         Member member = memberRepository.findOne(memberId);
         if (member.getRole() != Role.Mart) {
@@ -114,7 +115,6 @@ public class ItemService {
 
         item.setPrice(price);
     }
-
 
 
 

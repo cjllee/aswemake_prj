@@ -20,6 +20,8 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ItemRepository itemRepository;
 
+
+
     /** 주문 */
     @Transactional
     public Long order(Long memberId, Long itemId, int count) {
@@ -51,22 +53,18 @@ public class OrderService {
 
         int deliveryFee = 3000;  // 배달비 계산
 
-        // 주문 상품 생성
-        OrderItem orderItem = new OrderItem();
-        orderItem.setItem(item);
-        orderItem.setOrderPrice(orderPrice + deliveryFee);
-        orderItem.setCount(count);
+        // 주문 상품 생성 및 설정 순서 변경
+        OrderItem orderItem = OrderItem.createOrderItem(item, orderPrice + deliveryFee,count);
 
-        // 주문 생성
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
 
-        Order order = Order.createOrder(member,orderItems);
+        // 주문 생성
+        Order createdOrder = Order.createOrder(member,orderItems);
 
-        // 주문 저장
-        this.orderRepository.save(order);
+        this.orderRepository.save(createdOrder);
 
-        return this.orderRepository.save(order);
+        return createdOrder.getId();
     }
 
     public Order findOrder(Long id) {

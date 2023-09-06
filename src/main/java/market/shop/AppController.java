@@ -13,6 +13,7 @@ import market.shop.order.OrderRequest;
 import market.shop.order.OrderService;
 import market.shop.pricehistory.PriceHistory;
 import market.shop.pricehistory.PriceHistoryService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -62,6 +63,12 @@ public class AppController {
     }
     //완료
 
+    //삭제
+    @DeleteMapping("/items/{memberId}/{itemId}")
+    public ResponseEntity<Void> deleteItem(@PathVariable Long memberId, @PathVariable Long itemId) {
+        itemService.deleteItem(memberId, itemId);
+        return ResponseEntity.noContent().build();
+    } // 오류
 
     // 상품 가격 수정 API
     @PutMapping("/items/price")
@@ -72,11 +79,11 @@ public class AppController {
             throw new IllegalArgumentException("해당 이름의 상품이 없습니다.");
         }
         itemService.updatePrice(request.getMemberId(), item.getId(), request.getPrice());
-    }
-    //완료
+    }//오류
 
-    //상품 가격 조회
 
+
+    // 상품 가격 조회
     @GetMapping("/price-histories")
     public List<PriceHistory> getPriceHistories(@RequestParam String start, @RequestParam String end) throws ParseException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

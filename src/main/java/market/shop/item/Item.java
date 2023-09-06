@@ -7,9 +7,6 @@ import lombok.Setter;
 import java.util.List;
 import market.shop.pricehistory.PriceHistory;
 
-
-
-
 @Entity
 @Getter @Setter
 public class Item {
