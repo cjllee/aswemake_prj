@@ -25,8 +25,8 @@ public class OrderRepository {
         em.persist(order);
     }
 
-    public market.shop.order.Order findOne(Long id) {
-        return em.find(market.shop.order.Order.class, id);
+    public Order findOne(Long id) {
+        return em.find(Order.class, id);
     }
 
 

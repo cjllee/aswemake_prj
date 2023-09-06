@@ -23,6 +23,7 @@ public class Item {
     private int price;
 
 
+
     @OneToOne(mappedBy = "item", fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     private Coupon coupon;
 

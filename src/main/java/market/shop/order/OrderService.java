@@ -1,6 +1,5 @@
 package market.shop.order;
 
-import market.shop.delivery.Delivery;
 import market.shop.item.Item;
 import market.shop.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +8,7 @@ import market.shop.member.MemberRepository;
 import market.shop.orderitem.OrderItem;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,7 +21,6 @@ public class OrderService {
     private final ItemRepository itemRepository;
 
     /** 주문 */
-    @Transactional
     public Long order(Long memberId, Long itemId, int count) {
         // 엔티티 조회
         Member member = memberRepository.findOne(memberId);
@@ -34,7 +32,7 @@ public class OrderService {
         //주문 가격 : 원래 가격에서 할인된 금액 빼기 (일정 수준 이상일 때 10% 할인)
         int orderPrice;
         if(originalPrice >= 10000){
-            orderPrice=originalPrice-(int)(originalPrice*0.1);  // Apply a 10% discount.
+            orderPrice=originalPrice-(int)(originalPrice*0.1);
         }else{
             orderPrice=originalPrice;
         }
@@ -46,11 +44,14 @@ public class OrderService {
             }
         }
 
-        // 주문 상품 생성 (여기서는 createOrderItem이라는 정적 팩토리 메서드가 있다고 가정합니다.)
+        // 주문 상품 생성
         OrderItem orderItem = OrderItem.createOrderItem(item, orderPrice, count);
 
-        // 주문 생성 (여기서는 createOrder이라는 정적 팩토리 메서드가 있다고 가정합니다.)
-        Order order = Order.createOrder(member,orderItem);
+        // 주문 생성
+        List<OrderItem> orderItems = new ArrayList<>();
+        orderItems.add(orderItem);
+
+        Order order = Order.createOrder(member,orderItems);
 
         // 주문 저장
         orderRepository.save(order);
@@ -58,11 +59,10 @@ public class OrderService {
         return order.getId();
     }
 
-    /** 주문 취소 */
-    @Transactional
-    public void cancelOrder(Long orderId) {
-        Order findOrder = this.order.findById(orderId).orElseThrow(() -> new IllegalArgumentException("No such orders."));
-        findOrder.cancel();
+    public Order findOrder(Long id) {
+        return orderRepository.findOne(id);
     }
+
+
 
 }

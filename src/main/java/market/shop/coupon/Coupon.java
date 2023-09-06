@@ -1,10 +1,11 @@
 package market.shop.coupon;
 
-import jakarta.persistence.criteria.Order;
+
 import market.shop.item.Item;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import market.shop.order.Order;
 
 @Entity
 @Getter @Setter
@@ -13,7 +14,6 @@ public class Coupon {
     @Id @GeneratedValue
     @Column(name = "coupon_id")
     private Long id;
-
 
     private int discountAmount;
 
