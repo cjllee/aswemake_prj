@@ -6,6 +6,7 @@ import market.shop.delivery.Delivery;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import market.shop.item.Item;
 import market.shop.member.Member;
 import market.shop.orderitem.OrderItem;
 
@@ -14,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "orders")
 @Getter @Setter
+@Table(name = "orders")
 public class Order {
 
     @Id @GeneratedValue
@@ -64,9 +65,9 @@ public class Order {
         for (OrderItem orderItem : orderItems) {
             order.addOrderItem(orderItem);
         }
+
         return order;
     }
-
     //==조회 로직==//
     /** 전체 주문 가격 조회 */
     public double getTotalPrice() {
