@@ -99,9 +99,7 @@ public class AppController {
     // 주문 생성 API
     @PostMapping("/orders")
     public ResponseEntity<Long> placeOrder(@RequestBody @Validated OrderRequest request){
-
-        Long orderId=orderService.order(request.getMemberId(),request.getItemId(),request.getCount());
-
+        Long orderId = orderService.order(request.getMemberId(), request.getItemId(), request.getCount());
         return ResponseEntity.ok(orderId);
     }
 

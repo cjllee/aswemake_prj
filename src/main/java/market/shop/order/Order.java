@@ -1,16 +1,13 @@
 package market.shop.order;
 
-import jakarta.validation.constraints.NotNull;
+
 import market.shop.coupon.Coupon;
-import market.shop.delivery.Delivery;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import market.shop.item.Item;
 import market.shop.member.Member;
-import market.shop.orderitem.OrderItem;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,72 +24,41 @@ public class Order {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItems = new ArrayList<>();
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "delivery_id")
-    private Delivery delivery;
-
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<Coupon> coupons = new ArrayList<>();
 
-    private Long count;
+    // Item과의 연관 관계 설정 - ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id")
+    private Item item;  // 주문 아이템
 
-    private Long itemId;
+    // 주문 수량은 int로 변경합니다.
+    private int count;
 
+    // 총 가격은 계산을 통해 얻습니다.
     private int totalPrice;
 
-    private int deliveryFee;
-    private int discount;
-
+    // 배송비는 상수로 설정합니다.
+    private static final int DELIVERY_FEE= 3000;
 
     public void setMember(Member member) {
-        this.member = member;
+        this.member=member;
         member.getOrders().add(this);
     }
-    public void addOrderItem(OrderItem orderItem) {
-        orderItems.add(orderItem);
-        orderItem.setOrder(this);
-    }
-    public void setDelivery(Delivery delivery) {
-        this.delivery = delivery;
-        delivery.setOrder(this);
-    }
-    //==생성 메서드==//
-    public static Order createOrder(Member member, List<OrderItem> orderItems) {
-        Order order = new Order();
-        order.setMember(member);
 
-        for (OrderItem orderItem : orderItems) {
-            order.addOrderItem(orderItem);
+    public void setItem(Item item){
+        this.item=item;
+    }
+
+    public void setCount(int count){
+        this.count=count;
+        calculateTotalPrice();
+    }
+
+    // 총 가격 계산 메서드 추가
+    public void calculateTotalPrice() {
+        if(item != null && count > 0){
+            totalPrice=(item.getPrice()*count)+DELIVERY_FEE;
         }
-
-        return order;
     }
-    //==조회 로직==//
-    /** 전체 주문 가격 조회 */
-    public double getTotalPrice() {
-        double totalPrice = 0;
-        for (OrderItem orderItem : orderItems) {
-            totalPrice += orderItem.getTotalPrice();
-        }
-        return totalPrice + delivery.getPrice();
-    }
-
-
-    public void applyDeliveryFee(int fee) {
-        this.deliveryFee = fee;
-        this.totalPrice += fee;
-    }
-
-    public void applyDiscount(int discountAmount) {
-        if (this.totalPrice < discountAmount)
-            throw new IllegalArgumentException("Discount cannot be larger than total price");
-
-        this.discount = discountAmount;
-        this.totalPrice -= discountAmount;
-    }
-
-
 }
