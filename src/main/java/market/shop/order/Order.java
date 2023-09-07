@@ -5,6 +5,7 @@ import market.shop.coupon.Coupon;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import market.shop.coupon.DiscountType;
 import market.shop.item.Item;
 import market.shop.member.Member;
 
@@ -40,6 +41,9 @@ public class Order {
 
     // 배송비는 상수로 설정합니다.
     private static final int DELIVERY_FEE= 3000;
+
+    @Enumerated(EnumType.STRING)
+    private DiscountType couponType;
 
     public void setMember(Member member) {
         this.member=member;

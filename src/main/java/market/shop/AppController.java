@@ -1,6 +1,8 @@
 package market.shop;
 
 import lombok.RequiredArgsConstructor;
+import market.shop.coupon.Coupon;
+import market.shop.coupon.DiscountType;
 import market.shop.item.Item;
 import market.shop.item.ItemForm;
 import market.shop.item.ItemService;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -99,7 +102,23 @@ public class AppController {
     // 주문 생성 API
     @PostMapping("/orders")
     public ResponseEntity<Long> placeOrder(@RequestBody @Validated OrderRequest request){
-        Long orderId = orderService.order(request.getMemberId(), request.getItemId(), request.getCount());
+
+        Coupon coupon = new Coupon();
+
+        if(request.getCoupons().equals("PERCENT")) {
+            coupon.setDiscountType(DiscountType.PERCENT);
+            coupon.setDiscountAmount(10); // 10% discount for PERCENT type.
+        } else if(request.getCoupons().equals("AMOUNT")) {
+            coupon.setDiscountType(DiscountType.AMOUNT);
+            coupon.setDiscountAmount(1000); // 1000 won discount for AMOUNT type.
+        }
+
+        List<Coupon> coupons = new ArrayList<>();
+        coupons.add(coupon);
+
+        // orderService의 order 메소드에 쿠폰 리스트도 전달해야 합니다.
+        Long orderId = orderService.order(request.getMemberId(), request.getItemId(), request.getCount(), coupons);
+
         return ResponseEntity.ok(orderId);
     }
 

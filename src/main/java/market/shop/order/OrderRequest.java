@@ -9,6 +9,5 @@ public class OrderRequest {
     private Long memberId;
     private Long itemId;
     private int count;
-
-
+    private String coupons;
 }
