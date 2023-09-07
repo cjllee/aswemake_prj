@@ -26,18 +26,18 @@ public class OrderItem {
 
     private int count;
 
-    private int TotalPrice;
+    private int totalPrice;
 
     public static OrderItem createOrderItem(Item item, int orderPrice, int count) {
         OrderItem orderItem = new OrderItem();
         orderItem.setItem(item);
-        orderItem.setCount(count); // 여기에 추가
-        orderItem.setTotalPrice(orderPrice * count); // 여기에 추가
+        orderItem.setCount(count);
+        orderItem.setTotalPrice(orderPrice * count);
 
         return orderItem;
     }
 
-    public int getTotalPrice(){
-        return getOrderPrice() *getCount();
+    public int getTotalPrice() {
+        return totalPrice;
     }
 }

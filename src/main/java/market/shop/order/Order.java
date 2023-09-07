@@ -43,6 +43,8 @@ public class Order {
 
     private int totalPrice;
 
+    private int deliveryFee;
+    private int discount;
 
 
     public void setMember(Member member) {
@@ -77,5 +79,20 @@ public class Order {
         }
         return totalPrice + delivery.getPrice();
     }
+
+
+    public void applyDeliveryFee(int fee) {
+        this.deliveryFee = fee;
+        this.totalPrice += fee;
+    }
+
+    public void applyDiscount(int discountAmount) {
+        if (this.totalPrice < discountAmount)
+            throw new IllegalArgumentException("Discount cannot be larger than total price");
+
+        this.discount = discountAmount;
+        this.totalPrice -= discountAmount;
+    }
+
 
 }

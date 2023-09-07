@@ -33,24 +33,26 @@ public class OrderService {
             throw new IllegalArgumentException("No such item: " + itemId);
         }
 
-        // 배달비 계산 및 주문 상품 생성 및 설정 순서 변경
-        int deliveryFee = 3000;
-
         List<OrderItem> orderItems= new ArrayList<>();
 
-        // Here we create an OrderItem and set the count value.
-        OrderItem orderItem = OrderItem.createOrderItem(item,item.getPrice()+deliveryFee,count);
+        OrderItem orderItem = OrderItem.createOrderItem(item,item.getPrice(),count);
 
-        // Add the created order item to the list.
         orderItems.add(orderItem);
 
-        // Create the order and save it.
         Order createdOrders = Order.createOrder(member ,orderItems);
+
+        // Apply delivery fee of 3000.
+        createdOrders.applyDeliveryFee(3000);
+
+        // Set the count and itemId fields in the created order.
+        createdOrders.setCount((long) count);
+        createdOrders.setItemId(itemId);
 
         this.orderRepository.save(createdOrders);
 
         return createdOrders.getId();
     }
+
     public Order findOrder(Long id) {
         return this.orderRepository.findOne(id);
     }

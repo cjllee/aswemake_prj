@@ -14,6 +14,7 @@ import market.shop.order.OrderService;
 import market.shop.pricehistory.PriceHistory;
 import market.shop.pricehistory.PriceHistoryService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -97,8 +98,11 @@ public class AppController {
 
     // 주문 생성 API
     @PostMapping("/orders")
-    public Long createOrder(@RequestBody OrderRequest request) {
-        return orderService.order(request.getMemberId(), request.getItemId(), request.getCount());
+    public ResponseEntity<Long> placeOrder(@RequestBody @Validated OrderRequest request){
+
+        Long orderId=orderService.order(request.getMemberId(),request.getItemId(),request.getCount());
+
+        return ResponseEntity.ok(orderId);
     }
 
     //주문 조회
