@@ -1,4 +1,4 @@
-package member;
+package market.shop.member;
 
 import market.shop.member.Member;
 import market.shop.member.MemberRepository;
