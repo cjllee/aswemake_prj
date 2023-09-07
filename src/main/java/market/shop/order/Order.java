@@ -25,8 +25,9 @@ public class Order {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<Coupon> coupons = new ArrayList<>();
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "coupon_id")
+    private Coupon coupon;
 
     // Item과의 연관 관계 설정 - ManyToOne
     @ManyToOne(fetch = FetchType.LAZY)

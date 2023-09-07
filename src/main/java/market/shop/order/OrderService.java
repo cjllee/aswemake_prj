@@ -26,7 +26,7 @@ public class OrderService {
 
     /** 주문 */
     @Transactional
-    public Long order(Long memberId,Long itemId,int count, List<Coupon> coupons){
+    public Long order(Long memberId,Long itemId,int count,Coupon coupon){
 
         Member member=memberRepository.findOne(memberId);
         Item item=itemRepository.findOne(itemId);
@@ -40,28 +40,23 @@ public class OrderService {
 
         int totalPrice = item.getPrice() * count;
 
-        for (Coupon coupon : coupons) {
-            if (coupon.getDiscountType() == DiscountType.PERCENT) {
-                totalPrice -= totalPrice * (coupon.getDiscountAmount() / 100.0);
-                order.setCouponType(DiscountType.PERCENT); // Set the discount type in the Order entity.
-            } else if (coupon.getDiscountType() == DiscountType.AMOUNT) {
-                totalPrice -= coupon.getDiscountAmount();
-                order.setCouponType(DiscountType.AMOUNT); // Set the discount type in the Order entity.
-            }
-
-            coupon.setItem(item);
-            coupon.setOrder(order);
-
-            em.persist(coupon);
-
+        if (coupon.getDiscountType() == DiscountType.PERCENT) {
+            totalPrice -= totalPrice * (coupon.getDiscountAmount() / 100.0);
+            order.setCouponType(DiscountType.PERCENT);
+        } else if (coupon.getDiscountType() == DiscountType.AMOUNT) {
+            totalPrice -= coupon.getDiscountAmount();
+            order.setCouponType(DiscountType.AMOUNT);
         }
 
-        totalPrice += 3000;
+        coupon.setItem(item);
+        coupon.setOrder(order);
 
+        em.persist(coupon);
+
+        totalPrice += 3000;
         order.setTotalPrice(totalPrice);
 
         return  orderRepository.save(order);
-
     }
 
     public Order findOrder(Long id) {

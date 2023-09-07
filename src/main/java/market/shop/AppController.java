@@ -113,11 +113,7 @@ public class AppController {
             coupon.setDiscountAmount(1000); // 1000 won discount for AMOUNT type.
         }
 
-        List<Coupon> coupons = new ArrayList<>();
-        coupons.add(coupon);
-
-        // orderService의 order 메소드에 쿠폰 리스트도 전달해야 합니다.
-        Long orderId = orderService.order(request.getMemberId(), request.getItemId(), request.getCount(), coupons);
+        Long orderId = orderService.order(request.getMemberId(), request.getItemId(), request.getCount(), coupon);
 
         return ResponseEntity.ok(orderId);
     }
