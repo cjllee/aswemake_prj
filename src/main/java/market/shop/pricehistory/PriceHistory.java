@@ -6,7 +6,6 @@ import lombok.Setter;
 import market.shop.item.Item;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter

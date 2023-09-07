@@ -9,8 +9,6 @@ import market.shop.coupon.DiscountType;
 import market.shop.item.Item;
 import market.shop.member.Member;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -24,10 +22,6 @@ public class Order {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "coupon_id")
-    private Coupon coupon;
 
 
     @ManyToOne(fetch = FetchType.LAZY)

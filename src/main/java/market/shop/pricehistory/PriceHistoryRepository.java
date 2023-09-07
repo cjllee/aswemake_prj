@@ -6,8 +6,6 @@ import market.shop.item.Item;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.NoSuchElementException;
 
 @Repository
 public class PriceHistoryRepository {
