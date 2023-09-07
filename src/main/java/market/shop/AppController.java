@@ -39,7 +39,7 @@ public class AppController {
         member.setName(form.getName());
         member.setRole(form.getRole());
         memberService.join(member);
-    } // 완료
+    } // 성공
 
     //상품 등록
     @PostMapping("/items")
@@ -55,20 +55,21 @@ public class AppController {
 
         itemService.saveItem(item , memberId, priceHistory);  // saveItem() 메서드에서 PriceHistroy 객체도 함께 저장해야 합니다.
     }
+    //성공
 
     // 상품 조회 API
     @GetMapping("/items/{itemId}")
     public Item getItem(@PathVariable Long itemId) {
         return itemService.findOne(itemId);
-    }
-    //완료
+    }//보류
 
     //삭제
     @DeleteMapping("/items/{memberId}/{itemId}")
     public ResponseEntity<Void> deleteItem(@PathVariable Long memberId, @PathVariable Long itemId) {
         itemService.deleteItem(memberId, itemId);
         return ResponseEntity.noContent().build();
-    } // 오류
+    } // 조금 손보기
+
 
     // 상품 가격 수정 API
     @PutMapping("/items/price")
@@ -79,8 +80,7 @@ public class AppController {
             throw new IllegalArgumentException("해당 이름의 상품이 없습니다.");
         }
         itemService.updatePrice(request.getMemberId(), item.getId(), request.getPrice());
-    }//오류
-
+    }//성공
 
 
     // 상품 가격 조회
@@ -90,7 +90,7 @@ public class AppController {
         LocalDateTime startTime = LocalDateTime.parse(start, formatter);
         LocalDateTime endTime = LocalDateTime.parse(end, formatter);
         return priceHistoryService.findByChangedAt(startTime, endTime);
-    }
+    } // 보류
 
 // 여기부터 하기
 

@@ -36,7 +36,7 @@ public class Order {
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<Coupon> coupons = new ArrayList<>();
 
-
+    private Long count;
 
     private Long itemId;
 

@@ -33,11 +33,12 @@ public class OrderService {
             throw new IllegalArgumentException("No such item: " + itemId);
         }
 
-        //상품 원래 가격
+        //상품 원래 가격 계산
         int originalPrice=item.getPrice()*count;
 
         //주문 가격 : 원래 가격에서 할인된 금액 빼기 (일정 수준 이상일 때 10% 할인)
         int orderPrice;
+
         if(originalPrice >= 10000){
             orderPrice=originalPrice-(int)(originalPrice*0.1);
         }else{
@@ -51,15 +52,17 @@ public class OrderService {
             }
         }
 
-        int deliveryFee = 3000;  // 배달비 계산
+        // 배달비 계산 및 주문 상품 생성 및 설정 순서 변경
+        int deliveryFee = 3000;
 
-        // 주문 상품 생성 및 설정 순서 변경
         OrderItem orderItem = OrderItem.createOrderItem(item, orderPrice + deliveryFee,count);
 
+
         List<OrderItem> orderItems = new ArrayList<>();
+
         orderItems.add(orderItem);
 
-        // 주문 생성
+        // 주문 생성 및 저장
         Order createdOrder = Order.createOrder(member,orderItems);
 
         this.orderRepository.save(createdOrder);
