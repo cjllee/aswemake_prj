@@ -29,18 +29,18 @@ public class Order {
     @JoinColumn(name = "coupon_id")
     private Coupon coupon;
 
-    // Item과의 연관 관계 설정 - ManyToOne
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
-    private Item item;  // 주문 아이템
+    private Item item;
 
-    // 주문 수량은 int로 변경합니다.
+
     private int count;
 
-    // 총 가격은 계산을 통해 얻습니다.
+
     private int totalPrice;
 
-    // 배송비는 상수로 설정합니다.
+
     private static final int DELIVERY_FEE= 3000;
 
     @Enumerated(EnumType.STRING)
@@ -60,7 +60,7 @@ public class Order {
         calculateTotalPrice();
     }
 
-    // 총 가격 계산 메서드 추가
+
     public void calculateTotalPrice() {
         if(item != null && count > 0){
             totalPrice=(item.getPrice()*count)+DELIVERY_FEE;

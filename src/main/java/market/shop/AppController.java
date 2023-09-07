@@ -55,24 +55,24 @@ public class AppController {
         PriceHistory priceHistory = new PriceHistory();
         priceHistory.setItem(item);
         priceHistory.setPrice(form.getPrice());
-        priceHistory.setChangedAt(LocalDateTime.now());  // 현재 시간 설정
+        priceHistory.setChangedAt(LocalDateTime.now());
 
-        itemService.saveItem(item , memberId, priceHistory);  // saveItem() 메서드에서 PriceHistroy 객체도 함께 저장해야 합니다.
+        itemService.saveItem(item , memberId, priceHistory);
     }
-    //성공
+
 
     // 상품 조회 API
     @GetMapping("/items/{itemId}")
     public Item getItem(@PathVariable Long itemId) {
         return itemService.findOne(itemId);
-    }//보류
+    }
 
     //삭제
     @DeleteMapping("/items/{memberId}/{itemId}")
     public ResponseEntity<Void> deleteItem(@PathVariable Long memberId, @PathVariable Long itemId) {
         itemService.deleteItem(memberId, itemId);
         return ResponseEntity.noContent().build();
-    } // 조금 손보기
+    }
 
 
     // 상품 가격 수정 API
@@ -84,7 +84,7 @@ public class AppController {
             throw new IllegalArgumentException("해당 이름의 상품이 없습니다.");
         }
         itemService.updatePrice(request.getMemberId(), item.getId(), request.getPrice());
-    }//성공
+    }
 
 
     // 상품 가격 조회
@@ -96,7 +96,7 @@ public class AppController {
         return priceHistoryService.findByChangedAt(startTime, endTime);
     } // 보류
 
-// 여기부터 하기
+
 
 
     // 주문 생성 API
@@ -107,10 +107,10 @@ public class AppController {
 
         if(request.getCoupons().equals("PERCENT")) {
             coupon.setDiscountType(DiscountType.PERCENT);
-            coupon.setDiscountAmount(10); // 10% discount for PERCENT type.
+            coupon.setDiscountAmount(10);
         } else if(request.getCoupons().equals("AMOUNT")) {
             coupon.setDiscountType(DiscountType.AMOUNT);
-            coupon.setDiscountAmount(1000); // 1000 won discount for AMOUNT type.
+            coupon.setDiscountAmount(1000);
         }
 
         Long orderId = orderService.order(request.getMemberId(), request.getItemId(), request.getCount(), coupon);
@@ -123,7 +123,7 @@ public class AppController {
     public Order getOrder(@PathVariable("id") Long orderId) {
         return orderService.findOrder(orderId);
     }
-// 쿠폰 적용되는지 확인 하기
+
 }
 
 

@@ -35,7 +35,7 @@ public class OrderService {
         order.setMember(member);
         order.setItem(item);
 
-        // Set the count field in the Order entity.
+
         order.setCount(count);
 
         int totalPrice = item.getPrice() * count;

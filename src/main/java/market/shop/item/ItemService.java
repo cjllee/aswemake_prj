@@ -19,7 +19,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ItemService {
-    @PersistenceContext // Add this line.
+    @PersistenceContext
     private EntityManager em;
 
     private final ItemRepository itemRepository;
@@ -41,10 +41,10 @@ public class ItemService {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        // Format current time to 'yyyy-MM-dd HH:mm:ss'
+
         String formatDateTime = LocalDateTime.now().format(formatter);
 
-        // Parse formatted string back to LocalDateTime
+
         priceHistory.setChangedAt(LocalDateTime.parse(formatDateTime, formatter));
 
         priceHistoryRepository.save(priceHistory);
@@ -59,7 +59,7 @@ public class ItemService {
         }
         Item item = findOne(itemId);
         item.setName(newName);
-    }// 아이템 이름 변경
+    }
 
 
     @Transactional
@@ -98,17 +98,17 @@ public class ItemService {
 
         Item item = findOne(itemId);
 
-        // Create and save a PriceHistory entity when the price is updated.
+
         PriceHistory history = new PriceHistory();
         history.setItem(item);
         history.setPrice(price);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        // Format current time to 'yyyy-MM-dd HH:mm:ss'
+
         String formatDateTime = LocalDateTime.now().format(formatter);
 
-        // Parse formatted string back to LocalDateTime
+
         history.setChangedAt(LocalDateTime.parse(formatDateTime, formatter));
 
         em.persist(history);
