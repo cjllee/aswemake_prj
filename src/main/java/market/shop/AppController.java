@@ -14,16 +14,12 @@ import market.shop.order.Order;
 import market.shop.order.OrderRequest;
 import market.shop.order.OrderService;
 import market.shop.pricehistory.PriceHistory;
-import market.shop.pricehistory.PriceHistoryService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,7 +31,7 @@ public class AppController {
 
     private final OrderService orderService;
 
-    private final PriceHistoryService priceHistoryService;
+
     // 회원 가입 API
     @PostMapping("/members")
     public void createMember(@RequestBody MemberForm form) {
@@ -88,15 +84,11 @@ public class AppController {
 
 
     // 상품 가격 조회
-    @GetMapping("/price-histories")
-    public List<PriceHistory> getPriceHistories(@RequestParam String start, @RequestParam String end) throws ParseException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime startTime = LocalDateTime.parse(start, formatter);
-        LocalDateTime endTime = LocalDateTime.parse(end, formatter);
-        return priceHistoryService.findByChangedAt(startTime, endTime);
-    } // 보류
-
-
+    @GetMapping("/items/{itemId}/price-at-time")
+    public String getItemPriceAndNameAtTime(@PathVariable Long itemId,
+                                            @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") LocalDateTime dateTime) {
+        return itemService.findPriceAndNameAtTime(itemId, dateTime);
+    }
 
 
     // 주문 생성 API

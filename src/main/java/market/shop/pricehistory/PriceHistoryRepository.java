@@ -2,6 +2,7 @@ package market.shop.pricehistory;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
+import market.shop.item.Item;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -21,28 +22,17 @@ public class PriceHistoryRepository {
         em.persist(priceHistory);
     }
 
-    public PriceHistory findOne(Long id) {
-        return em.find(PriceHistory.class, id);
-    }
-    public List<PriceHistory> findByChangedAt(LocalDateTime start, LocalDateTime end) {
-        return em.createQuery("SELECT p FROM PriceHistory p WHERE p.changedAt >= :start AND p.changedAt < :end", PriceHistory.class)
-                .setParameter("start", start)
-                .setParameter("end", end)
-                .getResultList();
-    }
-
-    public PriceHistory findByItemNameAndRegisteredTime(String itemName, LocalDateTime registeredTime) {
-        String query = "SELECT p FROM PriceHistory p WHERE p.itemName = :itemName AND p.registeredTime = :registeredTime";
+    public PriceHistory findByItemAndChangedAt(Item item, LocalDateTime changedAt) {
         try {
-            return em.createQuery(query, PriceHistory.class)
-                    .setParameter("itemName", itemName)
-                    .setParameter("registeredTime", registeredTime)
+            return em.createQuery("SELECT p FROM PriceHistory p WHERE p.item = :item AND p.changedAt = :changedAt",
+                            PriceHistory.class)
+                    .setParameter("item", item)
+                    .setParameter("changedAt", changedAt)
                     .getSingleResult();
         } catch (NoResultException e) {
-            throw new NoSuchElementException("No price history for the given item and time");
+            return null;
         }
     }
-
 
 
 

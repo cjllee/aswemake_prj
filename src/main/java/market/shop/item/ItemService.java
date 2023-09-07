@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional(readOnly = true)
@@ -114,6 +115,19 @@ public class ItemService {
         em.persist(history);
 
         item.setPrice(price);
+    }
+
+
+    public String findPriceAndNameAtTime(Long itemId, LocalDateTime dateTime) {
+        Item item = findOne(itemId);
+        PriceHistory priceHistory = priceHistoryRepository.findByItemAndChangedAt(item, dateTime);
+        if (priceHistory == null) {
+            throw new NoSuchElementException("No price history for the given item and time");
+        }
+        return String.format("%s 시점의 %s 상품 가격 = %d원",
+                dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                item.getName(),
+                priceHistory.getPrice());
     }
 
 
