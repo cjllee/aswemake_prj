@@ -9,5 +9,4 @@ public class UpdatePriceRequest {
     private String itemName;
     private int price;
     private Long memberId;
-
 }

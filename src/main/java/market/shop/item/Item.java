@@ -25,6 +25,4 @@ public class Item {
 
     @OneToMany(mappedBy = "item", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     List<PriceHistory> priceHistories;
-
-
 }

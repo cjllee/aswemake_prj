@@ -122,14 +122,11 @@ public class ItemService {
         Item item = findOne(itemId);
         PriceHistory priceHistory = priceHistoryRepository.findByItemAndChangedAt(item, dateTime);
         if (priceHistory == null) {
-            throw new NoSuchElementException("No price history for the given item and time");
+            throw new NoSuchElementException("해당 상품 및 시간에 대한 가격 내역이 없습니다.");
         }
         return String.format("%s 시점의 %s 상품 가격 = %d원",
                 dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
                 item.getName(),
                 priceHistory.getPrice());
     }
-
-
-
 }

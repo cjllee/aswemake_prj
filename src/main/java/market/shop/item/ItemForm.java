@@ -9,5 +9,4 @@ public class ItemForm {
     private Long id;
     private String name;
     private int price;
-
 }

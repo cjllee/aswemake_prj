@@ -29,7 +29,4 @@ public class PriceHistory {
     public void setChangedAt(LocalDateTime changedAt) {
         this.changedAt = changedAt;
     }
-
-
-
 }
