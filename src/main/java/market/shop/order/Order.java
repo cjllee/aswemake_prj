@@ -1,7 +1,5 @@
 package market.shop.order;
 
-
-import market.shop.coupon.Coupon;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
